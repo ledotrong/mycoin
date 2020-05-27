@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Table, Tag } from 'antd';
 
-const TxModal = (props) => {
+const HistoryModal = (props) => {
   const columns = [
     {
       title: 'From',
@@ -39,9 +39,11 @@ const TxModal = (props) => {
     },
   ];
 
+  console.log(props.transactions);
+
   return (
     <Modal
-      title="Pending Transactions"
+      title="Transaction History"
       visible={props.visible}
       onCancel={props.handleCancel}
       footer={[
@@ -59,4 +61,4 @@ const TxModal = (props) => {
   );
 };
 
-export default TxModal;
+export default HistoryModal;

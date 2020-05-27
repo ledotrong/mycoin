@@ -16,6 +16,7 @@ import {
   Tag,
 } from 'antd';
 import TxModal from '../Transactions/TxModal';
+import HistoryModal from '../Transactions/HistoryModal';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -40,6 +41,7 @@ const BlockChainView = () => {
   const [recipientAddress, setRecipient] = useState('');
   const [txAmount, setTxAmount] = useState(10);
   const [modalVisible, setModalVisible] = useState(false);
+  const [historyModalVisible, setHistoryModalVisible] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
 
   const generateWalletKeys = () => {
@@ -102,6 +104,17 @@ const BlockChainView = () => {
   return (
     <div style={{ width: '100%' }}>
       <div style={{ paddingLeft: 100, paddingRight: 100 }}>
+        <Row>
+          <span>
+            Student: <span style={{ fontWeight: 'bold' }}>Lê Đỗ Trọng</span>
+          </span>
+        </Row>
+        <Row style={{ marginBottom: 20 }}>
+          <span>
+            ID: <span style={{ fontWeight: 'bold' }}>1612744</span>
+          </span>
+        </Row>
+
         <Row justify="space-between">
           <Button type="primary" onClick={() => generateWalletKeys()}>
             Add Account
@@ -116,7 +129,7 @@ const BlockChainView = () => {
           <Radio.Group onChange={changeWallet} value={selectedWallet}>
             {walletKeys.map((item, key) => (
               <Radio key={key} value={key}>
-                {item.name}
+                <span style={{ fontWeight: 'bold' }}>{item.name}</span>
               </Radio>
             ))}
           </Radio.Group>
@@ -129,7 +142,9 @@ const BlockChainView = () => {
         </Row>
         <Row>
           <span>Transaction History: </span>
-          <Button size="small">Show</Button>
+          <Button size="small" onClick={() => setHistoryModalVisible(true)}>
+            Show
+          </Button>
         </Row>
       </div>
       <Divider />
@@ -190,7 +205,11 @@ const BlockChainView = () => {
           </div>
           <div>
             <Card className="mining-card">
-              <div>Mining Reward: 100</div>
+              <div style={{ marginBottom: 10 }}>
+                <span>Difficulty: </span>
+                {blockChainInstance.difficulty}
+              </div>
+              <div style={{ marginBottom: 10 }}>Mining Reward: 100</div>
               <Button
                 type="primary"
                 style={{ width: '100%' }}
@@ -212,6 +231,16 @@ const BlockChainView = () => {
         wallets={walletKeys}
         transactions={[...blockChainInstance.pendingTransactions]}
       ></TxModal>
+      <HistoryModal
+        visible={historyModalVisible}
+        handleCancel={() => setHistoryModalVisible(!historyModalVisible)}
+        wallets={walletKeys}
+        transactions={[
+          ...blockChainInstance.getHistoryOfAddress(
+            walletKeys[selectedWallet].publicKey
+          ),
+        ]}
+      ></HistoryModal>
     </div>
   );
 };
