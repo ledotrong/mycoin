@@ -46,7 +46,7 @@ const TxModal = (props) => {
       onCancel={props.handleCancel}
       footer={[
         <Button key="back" onClick={props.handleCancel}>
-          Cancel
+          Close
         </Button>,
       ]}
     >
